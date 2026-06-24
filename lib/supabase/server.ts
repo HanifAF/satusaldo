@@ -1,0 +1,30 @@
+// Destinasi: lib/supabase/server.ts
+// Dipakai di Server Component (app/dashboard/page.tsx, dst.) & Server Action (lib/actions/*.ts).
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+
+export async function createClient() {
+  const cookieStore = await cookies();
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
+          } catch {
+            // Boleh diabaikan kalau dipanggil dari Server Component murni (read-only).
+            // middleware.ts di bawah yang akan refresh session di request berikutnya.
+          }
+        },
+      },
+    },
+  );
+}
