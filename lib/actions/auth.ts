@@ -35,7 +35,7 @@ export async function signUp(formData: FormData) {
     redirect(`/register?error=${encodeURIComponent(error.message)}`);
   }
 
-  redirect("/login?message=Cek email kamu untuk konfirmasi akun");
+  redirect("/dashboard");
 }
 
 export async function signOut() {
