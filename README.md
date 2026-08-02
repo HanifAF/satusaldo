@@ -35,17 +35,20 @@ UI screens are designed first in Google Stitch before being implemented in code,
 - [ ] Detail Dompet (template)
 
 ## Project structure
+
+```
 Satu-Saldo/
 ├── public/
 ├── src/
-│ ├── assets/
-│ ├── components/
-│ ├── views/
-│ ├── router/
-│ ├── App.vue
-│ └── main.js
+│   ├── assets/
+│   ├── components/
+│   ├── views/
+│   ├── router/
+│   ├── App.vue
+│   └── main.js
 ├── PRD.md
 └── satusaldo-design-final.md
+```
 
 ## Running it locally
 
