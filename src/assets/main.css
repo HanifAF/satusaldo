@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #F9FEF6;
+    color: #064E3B;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-glass border border-white/80 rounded-lg shadow-glass;
+  }
+  .glass-card-strong {
+    @apply bg-white/60 backdrop-blur-glass border border-white/80 rounded-lg shadow-glass;
+  }
+  .hero-card {
+    background: linear-gradient(135deg, #F5FF6C 0%, #17C662 100%);
+    @apply rounded-lg shadow-hero text-on-surface;
+  }
+  .btn-primary {
+    @apply bg-primary text-white font-jakarta font-semibold rounded-full px-6 py-3 shadow-btn
+           transition-all duration-200 hover:brightness-105 hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-none;
+  }
+  .btn-secondary {
+    @apply bg-white/60 backdrop-blur-glass border border-white/80 text-on-surface font-jakarta font-semibold
+           rounded-full px-6 py-3 shadow-glass transition-all duration-200
+           hover:bg-white/80 hover:-translate-y-0.5;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-on-surface font-jakarta font-medium rounded-full px-4 py-2
+           transition-all duration-200 hover:bg-primary/10;
+  }
+  .btn-danger {
+    @apply bg-error text-white font-jakarta font-semibold rounded-full px-6 py-3
+           shadow-[0_8px_16px_rgba(244,63,94,0.25)] transition-all duration-200
+           hover:brightness-105 hover:-translate-y-0.5;
+  }
+  .form-input {
+    @apply w-full bg-white/40 backdrop-blur-glass border border-white/80 rounded-sm px-4 py-3
+           text-on-surface font-jakarta text-sm placeholder-on-surface-secondary/60
+           focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary
+           transition-all duration-200;
+  }
+  .form-label {
+    @apply block font-jakarta font-medium text-sm text-on-surface mb-1.5;
+  }
+  .form-select {
+    @apply form-input appearance-none cursor-pointer;
+  }
+  .badge-success {
+    @apply inline-flex items-center gap-1 text-xs font-jakarta font-semibold
+           bg-primary/15 text-primary rounded-full px-2.5 py-1;
+  }
+  .badge-error {
+    @apply inline-flex items-center gap-1 text-xs font-jakarta font-semibold
+           bg-error/15 text-error rounded-full px-2.5 py-1;
+  }
+  .badge-warning {
+    @apply inline-flex items-center gap-1 text-xs font-jakarta font-semibold
+           bg-warning/15 text-warning rounded-full px-2.5 py-1;
+  }
+  .badge-neutral {
+    @apply inline-flex items-center gap-1 text-xs font-jakarta font-semibold
+           bg-on-surface/10 text-on-surface-secondary rounded-full px-2.5 py-1;
+  }
+  .skeleton {
+    @apply rounded-md;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.3) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  .mesh-bg {
+    background-color: #F9FEF6;
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(245, 255, 108, 0.40) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(23, 198, 98, 0.30) 0%, transparent 50%),
+      radial-gradient(ellipse at 65% 5%,  rgba(23, 198, 98, 0.20) 0%, transparent 40%),
+      radial-gradient(ellipse at 5%  80%, rgba(245, 255, 108, 0.15) 0%, transparent 35%);
+  }
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-md text-on-surface-secondary font-jakarta font-medium text-sm
+           transition-all duration-200 cursor-pointer hover:bg-primary/10 hover:text-primary;
+  }
+  .nav-item.active {
+    @apply bg-primary/15 text-primary font-semibold;
+  }
+  .modal-overlay {
+    @apply fixed inset-0 bg-on-surface/20 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+  }
+  .modal-content {
+    @apply glass-card-strong w-full max-w-md max-h-[90vh] overflow-y-auto animate-slide-up;
+  }
+}
+
+@layer utilities {
+  .currency {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+  .balance-hidden {
+    filter: blur(8px);
+    user-select: none;
+  }
+  .floating {
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-6px); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+}
