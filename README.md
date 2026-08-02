@@ -1,14 +1,14 @@
 # SatuSaldo
 
-I started SatuSaldo because I kept losing track of money that technically never disappeared — it just moved. A transfer from my bank to an e-wallet, a cash withdrawal at an ATM, a top-up through a minimarket — each one chips away a small admin fee, and none of the finance apps I'd tried actually accounted for that. So the balance on screen never quite matched what was really in my pocket.
+I started SatuSaldo because I kept losing track of money that technically never disappeared it just moved. A transfer from my bank to an e-wallet, a cash withdrawal at an ATM, a top-up through a minimarket each one chips away a small admin fee, and none of the finance apps I'd tried actually accounted for that. So the balance on screen never quite matched what was really in my pocket.
 
-That's the whole premise here: three wallets — Bank, E-Wallet, and Cash — treated as one connected system, where every transfer between them logs its admin fee automatically instead of quietly disappearing.
+That's the whole premise here: three wallets Bank, E-Wallet, and Cash treated as one connected system, where every transfer between them logs its admin fee automatically instead of quietly disappearing.
 
-This repo is still very much in progress. It's based on a PRD written under the working name "Dompetku," and covers both the landing page (what you're looking at right now) and, eventually, the full app.
+This repo is still very much in progress. It's based on a PRD written under the working name "Satu Saldo," and covers both the landing page (what you're looking at right now) and, eventually, the full app.
 
 ## 💡 What it does
 
-Beyond the three-wallet system, SatuSaldo handles a few other things that tend to get lost in spreadsheets: debts and receivables (money borrowed from or lent to someone, tracked until it's settled), and recurring monthly bills — rent, subscriptions, internet quota — with due-date reminders and a one-tap "pay" action that deducts straight from a chosen wallet.
+Beyond the three-wallet system, SatuSaldo handles a few other things that tend to get lost in spreadsheets: debts and receivables (money borrowed from or lent to someone, tracked until it's settled), and recurring monthly bills — rent, subscriptions, internet quota with due-date reminders and a one-tap "pay" action that deducts straight from a chosen wallet.
 
 The cash wallet gets its own quick-entry interface, since the whole point of tracking small cash expenses (parking, snacks, tolls) is that people give up on it the moment it feels like a chore.
 
