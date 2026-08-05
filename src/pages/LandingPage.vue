@@ -12,7 +12,7 @@
         <!-- Center Menus -->
         <div class="hidden md:flex items-center gap-8">
           <div class="relative group cursor-pointer" @click="scrollTo('beranda')">
-            <span class="text-sm font-medium transition-colors" :class="activeSection === 'beranda' ? 'text-primary' : 'text-on-surface hover:text-primary'">Beranda</span>
+            <span class="text-sm font-medium transition-colors" :class="activeSection === 'beranda' ? 'text-primary' : 'text-on-surface hover:text-primary'">Home</span>
             <div v-if="activeSection === 'beranda'" class="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-primary rounded-full"></div>
           </div>
           <div class="relative group cursor-pointer" @click="scrollTo('how-it-works')">
@@ -20,7 +20,7 @@
             <div v-if="activeSection === 'how-it-works'" class="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-primary rounded-full"></div>
           </div>
           <div class="relative group cursor-pointer" @click="scrollTo('fitur')">
-            <span class="text-sm font-medium transition-colors" :class="activeSection === 'fitur' ? 'text-primary' : 'text-on-surface hover:text-primary'">Fitur</span>
+            <span class="text-sm font-medium transition-colors" :class="activeSection === 'fitur' ? 'text-primary' : 'text-on-surface hover:text-primary'">Features</span>
             <div v-if="activeSection === 'fitur'" class="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-primary rounded-full"></div>
           </div>
         </div>
@@ -32,14 +32,18 @@
       </div>
     </nav>
 
-    <!-- Hero Section (Beranda) - Locked 100vh Viewport -->
-    <section id="beranda" class="min-h-screen flex items-center max-w-7xl mx-auto px-6 pt-20 pb-10 scroll-mt-32 relative z-10">
+    <!-- Hero Section: hero-wrapper full-width (relative + overflow-hidden + min-h-screen).
+         Kanvas absolute = 100% LAYAR (bukan 1280px), sehingga objek 3D tidak kepotong. -->
+    <section id="beranda" class="hero-wrapper min-h-screen flex items-center relative overflow-hidden scroll-mt-32 bg-frosty-mint-hero">
       
-      <!-- Main Hero Content -->
-      <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
+      <!-- 3D Network Background — absolute penuh selebar layar -->
+      <Hero3DNetwork />
+
+      <!-- UI Wrapper: relative + z-10 + pointer-events-none; max-w-7xl menjaga posisi teks tetap terpusat -->
+      <div class="ui-wrapper relative z-10 pointer-events-none w-full px-6 pt-20 pb-10 max-w-7xl mx-auto">
         
         <!-- Left Content -->
-        <div class="animate-fade-in z-10 relative">
+        <div class="animate-fade-in">
           <h1 class="font-outfit font-extrabold text-5xl lg:text-[64px] text-[#0f3627] leading-[1.1] tracking-tight mb-6">
             Kelola Semua Uangmu<br/>
             dalam Satu Dashboard
@@ -47,7 +51,7 @@
           <p class="font-jakarta text-[#4a5f55] text-lg leading-relaxed mb-10 max-w-lg">
             Platform finansial terpadu untuk menghubungkan berbagai rekening bank, e-wallet, dan kas tunai secara real-time.
           </p>
-          <div class="flex flex-wrap items-center gap-4">
+          <div class="flex flex-wrap items-center gap-4 pointer-events-auto">
             <router-link to="/dashboard">
               <button class="bg-[#17c662] hover:bg-[#15b358] text-white font-jakarta font-semibold rounded-full px-8 py-3.5 shadow-btn transition-all hover:-translate-y-0.5">
                 Daftar Gratis
@@ -59,25 +63,15 @@
           </div>
         </div>
 
-        <!-- Right Content (3D Placeholder) -->
-        <div class="relative animate-slide-up h-[400px] lg:h-[480px] flex items-center justify-center w-full">
-          <!-- Soft glowing background to mimic the light behind the 3D objects -->
-          <div class="absolute inset-0 bg-[#17c662]/10 blur-[80px] rounded-full pointer-events-none"></div>
-          
-          <!-- Placeholder Box for 3D Animation -->
-          <div class="w-full h-full max-w-md border-2 border-dashed border-[#17c662]/35 rounded-2xl flex flex-col items-center justify-center bg-white/40 backdrop-blur-md relative z-10 hover:bg-white/60 transition-colors duration-300 shadow-sm">
-            <svg class="w-12 h-12 text-[#17c662]/60 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-            <p class="font-jakarta font-semibold text-[#0f3627] text-sm">Area Animasi 3D / Spline</p>
-            <p class="font-jakarta text-xs text-[#4a5f55] mt-1.5 max-w-[220px] text-center leading-relaxed">Kosongkan sementara. Nanti embed model 3D atau gambar ilustrasinya di sini.</p>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Seamless Bottom Feathering to White -->
+      <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-0"></div>
 
     </section>
 
     <!-- SECTION: How It Works (Single Continuous Hourglass Gradient Layer Spanning from Beranda's Lower Third into How It Works) -->
-    <section id="how-it-works" class="w-full bg-white relative scroll-mt-24">
+    <section id="how-it-works" class="w-full bg-white relative scroll-mt-24 min-h-screen flex flex-col justify-center">
         
         <!-- ONE Single Continuous Hourglass Gradient SVG (Seamless transition, zero white gap, zero duplicate blob) -->
         <div class="absolute -top-44 md:-top-64 inset-x-0 bottom-0 z-0 pointer-events-none flex items-center justify-center overflow-visible">
@@ -123,7 +117,7 @@
         </div>
 
         <!-- Subtle Bottom Blend for Section Transition -->
-        <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-0"></div>
+        <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none z-0"></div>
 
         <!-- 1. Headline Block (Shifted Upward with Compact Spacing) -->
         <div class="relative w-full pt-10 md:pt-16 pb-4 md:pb-6 flex flex-col items-center justify-center">
@@ -220,8 +214,142 @@
 
     </section>
 
-    <!-- SECTION: Fitur (Completely Empty for now) -->
-    <section id="fitur" class="scroll-mt-24"></section>
+    <!-- SECTION: Fitur (3 Card Grid with Custom Color Scheme & Default Visuals) -->
+    <section id="fitur" class="w-full bg-frosty-mint-bottom relative scroll-mt-24 min-h-screen flex items-center py-20 overflow-hidden">
+      
+      <!-- Seamless Top & Bottom Feathering to White -->
+      <div class="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-white via-white/80 to-transparent pointer-events-none z-0"></div>
+      <div class="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-0"></div>
+
+      <div class="max-w-7xl mx-auto px-6 w-full relative z-10">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-outfit font-bold text-4xl lg:text-5xl text-[#064E3B] tracking-tight mb-4">
+            Fitur Unggulan Satu Saldo
+          </h2>
+          <p class="font-jakarta text-[#64748B] text-lg max-w-2xl mx-auto">
+            Semua kebutuhan keuangan harianmu, terpusat dalam satu dashboard yang bersih dan mudah.
+          </p>
+        </div>
+
+        <!-- 3 Column Grid (responsive: 1 kolom mobile, 3 kolom desktop) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          
+          <!-- Card 1: Multi-Dompet Terpadu (Pale Lime Green Pastel) -->
+          <div class="feature-card bg-[#EAF7D5] border border-[#D4F0AE] rounded-[32px] p-7 shadow-[0_12px_36px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_22px_45px_rgba(0,0,0,0.08)] flex flex-col justify-between">
+            <div>
+              <!-- Default Card Image / Visual Illustration -->
+              <div class="w-full h-48 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/90 p-4 mb-6 flex flex-col justify-center items-center shadow-inner relative overflow-hidden group">
+                <div class="w-full space-y-2.5 max-w-[220px]">
+                  <div class="bg-[#F0FDF4] border border-[#DCFCE7] rounded-xl p-2.5 flex items-center justify-between shadow-xs">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-[#17C662] flex items-center justify-center text-white text-[10px] font-bold">B</div>
+                      <span class="font-outfit text-xs font-bold text-[#143D1A]">Bank BCA</span>
+                    </div>
+                    <span class="font-outfit text-xs font-bold text-[#143D1A]">Rp 12.4M</span>
+                  </div>
+                  <div class="bg-[#FEFCE8] border border-[#FEF08A] rounded-xl p-2.5 flex items-center justify-between shadow-xs">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-[#EAB308] flex items-center justify-center text-white text-[10px] font-bold">E</div>
+                      <span class="font-outfit text-xs font-bold text-[#143D1A]">GoPay &amp; OVO</span>
+                    </div>
+                    <span class="font-outfit text-xs font-bold text-[#143D1A]">Rp 5.5M</span>
+                  </div>
+                  <div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-2.5 flex items-center justify-between shadow-xs">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-[#64748B] flex items-center justify-center text-white text-[10px] font-bold">K</div>
+                      <span class="font-outfit text-xs font-bold text-[#143D1A]">Kas Tunai</span>
+                    </div>
+                    <span class="font-outfit text-xs font-bold text-[#143D1A]">Rp 2.1M</span>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="font-outfit font-bold text-2xl text-[#143D1A] mb-3">
+                Multi-Dompet Terpadu
+              </h3>
+              <p class="font-jakarta text-[#38593A] text-sm md:text-base leading-relaxed">
+                Pantau saldo Bank, E-Wallet &amp; Kas Tunai dalam satu tempat. Transisi antar sumber dana tanpa berpindah aplikasi.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2: Pembayaran Tagihan (Vibrant Solid Green) -->
+          <div class="feature-card bg-[#17C662] border border-[#14B258] rounded-[32px] p-7 shadow-[0_12px_36px_rgba(23,198,98,0.22)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_22px_45px_rgba(23,198,98,0.32)] flex flex-col justify-between">
+            <div>
+              <!-- Default Card Image / Visual Illustration -->
+              <div class="w-full h-48 rounded-2xl bg-white/15 backdrop-blur-md border border-white/30 p-4 mb-6 flex flex-col justify-center items-center relative overflow-hidden shadow-inner">
+                <div class="w-full space-y-2.5 max-w-[220px]">
+                  <div class="bg-white/20 border border-white/30 rounded-xl p-2.5 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center text-[10px] font-bold">⚡</div>
+                      <span class="font-outfit text-xs font-bold text-white">Listrik PLN</span>
+                    </div>
+                    <span class="bg-white/30 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Lunas</span>
+                  </div>
+                  <div class="bg-white/20 border border-white/30 rounded-xl p-2.5 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center text-[10px] font-bold">🌐</div>
+                      <span class="font-outfit text-xs font-bold text-white">Internet WiFi</span>
+                    </div>
+                    <span class="bg-[#F5FF6C] text-[#064E3B] text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Jatuh Tempo</span>
+                  </div>
+                  <div class="bg-white/20 border border-white/30 rounded-xl p-2.5 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center text-[10px] font-bold">🎬</div>
+                      <span class="font-outfit text-xs font-bold text-white">Netflix &amp; Spotify</span>
+                    </div>
+                    <span class="bg-white/30 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Auto-Debit</span>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="font-outfit font-bold text-2xl text-white mb-3">
+                Pembayaran Tagihan
+              </h3>
+              <p class="font-jakarta text-emerald-50 text-sm md:text-base leading-relaxed">
+                Bayar tagihan bulanan langsung dari dashboard. Riwayat tersimpan otomatis, tak perlu aplikasi lain.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3: Ringkasan Real-time (Bright Lime Green) -->
+          <div class="feature-card bg-[#C3F53C] border border-[#ADE82E] rounded-[32px] p-7 shadow-[0_12px_36px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_22px_45px_rgba(0,0,0,0.12)] flex flex-col justify-between">
+            <div>
+              <!-- Default Card Image / Visual Illustration -->
+              <div class="w-full h-48 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/90 p-4 mb-6 flex flex-col justify-center items-center shadow-inner relative overflow-hidden">
+                <div class="w-full max-w-[220px] bg-white rounded-xl p-3 border border-[#E2E8F0] shadow-xs">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="font-jakarta text-[11px] font-semibold text-[#64748B]">Total Kekayaan Bersih</span>
+                    <span class="bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold px-1.5 py-0.5 rounded">+14.2%</span>
+                  </div>
+                  <p class="font-outfit text-xl font-extrabold text-[#0F172A] tracking-tight">Rp 20.000.000</p>
+                  
+                  <!-- Mini Chart Visual Sparkline -->
+                  <div class="mt-2.5 pt-2 border-t border-[#F1F5F9] flex items-end justify-between h-8 gap-1">
+                    <div class="w-full bg-[#E2E8F0] rounded-t-sm h-3"></div>
+                    <div class="w-full bg-[#E2E8F0] rounded-t-sm h-4"></div>
+                    <div class="w-full bg-[#E2E8F0] rounded-t-sm h-3.5"></div>
+                    <div class="w-full bg-[#C3F53C] rounded-t-sm h-6"></div>
+                    <div class="w-full bg-[#17C662] rounded-t-sm h-8"></div>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="font-outfit font-bold text-2xl text-[#1B2B06] mb-3">
+                Ringkasan Real-time
+              </h3>
+              <p class="font-jakarta text-[#3B5514] text-sm md:text-base leading-relaxed">
+                Lihat total kekayaan bersih &amp; ringkasan arus kas dalam hitungan detik. Data selalu segar.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
 
   </div>
 </template>
@@ -229,6 +357,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import Hero3DNetwork from '@/components/app/Hero3DNetwork.vue'
 
 const activeSection = ref('beranda')
 const isScrolled = ref(false)
@@ -243,29 +372,52 @@ const scrollTo = (id) => {
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20
+
+  // Deteksi section aktif berdasarkan posisi scroll (andal untuk section 100vh)
+  const offset = 140 // garis deteksi di bawah navbar
+  const ids = ['beranda', 'how-it-works', 'fitur']
+  let current = ids[0]
+
+  ids.forEach((id) => {
+    const el = document.getElementById(id)
+    if (el && el.getBoundingClientRect().top <= offset) {
+      current = id
+    }
+  })
+
+  // Kalau sudah mentok di bawah, paksa section terakhir aktif
+  const last = document.getElementById('fitur')
+  if (last && window.innerHeight + window.scrollY >= last.offsetTop + last.offsetHeight - 4) {
+    current = 'fitur'
+  }
+
+  activeSection.value = current
 }
 
-let observer
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeSection.value = entry.target.id
-      }
-    })
-  }, { threshold: 0.3 })
-
-  document.querySelectorAll('section[id]').forEach((section) => {
-    observer.observe(section)
-  })
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  if (observer) {
-    observer.disconnect()
-  }
 })
 </script>
+
+<style scoped>
+.bg-frosty-mint-hero {
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(ellipse 55% 42% at 6% 38%, rgba(245, 255, 108, 0.38) 0%, rgba(254, 249, 195, 0.14) 45%, transparent 75%),
+    radial-gradient(ellipse 55% 42% at 94% 38%, rgba(52, 211, 153, 0.34) 0%, rgba(167, 243, 208, 0.12) 45%, transparent 75%),
+    radial-gradient(ellipse 85% 60% at 50% 50%, #ffffff 0%, rgba(255, 255, 255, 0.98) 60%, rgba(240, 253, 244, 0.25) 100%);
+}
+
+.bg-frosty-mint-bottom {
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(ellipse 60% 45% at 5% 95%, rgba(245, 255, 108, 0.42) 0%, rgba(254, 249, 195, 0.16) 45%, transparent 75%),
+    radial-gradient(ellipse 60% 45% at 95% 95%, rgba(52, 211, 153, 0.38) 0%, rgba(167, 243, 208, 0.14) 45%, transparent 75%),
+    radial-gradient(ellipse 85% 55% at 50% 98%, #ffffff 0%, rgba(255, 255, 255, 0.98) 60%, rgba(240, 253, 244, 0.28) 100%);
+}
+</style>
