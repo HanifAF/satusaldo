@@ -39,15 +39,20 @@
     <div v-else-if="filteredDebts.length" class="space-y-4">
       <div v-for="debt in filteredDebts" :key="debt.id" class="glass-card p-5" :class="{ 'opacity-60': debt.is_settled }">
         <div class="flex items-start gap-4">
-          <div class="w-11 h-11 rounded-md flex items-center justify-center text-xl flex-shrink-0"
-            :class="debt.direction === 'owe' ? 'bg-error/10' : 'bg-primary/10'">
-            {{ debt.direction === 'owe' ? '😬' : '🙂' }}
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+            :class="debt.direction === 'owe' ? 'bg-error/10 text-error' : 'bg-primary/10 text-primary'">
+            <svg v-if="debt.direction === 'owe'" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+            <svg v-else class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
               <p class="font-jakarta font-semibold text-sm text-on-surface">{{ debt.person_name }}</p>
               <span class="badge-neutral text-xs">{{ debt.direction === 'owe' ? 'Hutang ke mereka' : 'Piutang dari mereka' }}</span>
-              <span v-if="debt.is_settled" class="badge-success">Lunas ✓</span>
+              <span v-if="debt.is_settled" class="badge-success">Lunas</span>
             </div>
             <p v-if="debt.note" class="font-jakarta text-xs text-on-surface-secondary mt-0.5 truncate">{{ debt.note }}</p>
             <div class="flex items-center gap-3 mt-2">
@@ -79,7 +84,14 @@
 
     <!-- Empty -->
     <div v-else class="text-center py-16">
-      <p class="text-4xl mb-3">🤝</p>
+      <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mx-auto mb-4">
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      </div>
       <p class="font-outfit font-semibold text-on-surface mb-1">Tidak ada {{ activeTab === 'owe' ? 'utang' : 'piutang' }} aktif</p>
       <p class="font-jakarta text-sm text-on-surface-secondary mb-5">{{ activeTab === 'owe' ? 'Wah, keuanganmu bersih!' : 'Kamu belum meminjamkan uang ke siapapun.' }}</p>
       <BaseButton variant="primary" size="sm" @click="showModal = true">+ Catat Baru</BaseButton>
@@ -95,7 +107,7 @@
           >{{ t.label }}</button>
         </div>
         <BaseInput v-model="form.personName" label="Nama Orang / Pihak" placeholder="Contoh: Budi" :required="true" />
-        <BaseInput v-model="form.amountStr" label="Nominal" type="text" placeholder="0" prefix="Rp" :required="true" @input="(e) => form.amountStr = formatInput(e.target.value)" />
+        <BaseInput v-model="form.amountStr" label="Nominal" type="text" placeholder="0" prefix="IDR" :required="true" @input="(e) => form.amountStr = formatInput(e.target.value)" />
         <BaseSelect v-model="form.walletId" label="Dompet" :options="walletOptions" :required="true" />
         <BaseInput v-model="form.dueDate" label="Jatuh Tempo (opsional)" type="date" />
         <BaseInput v-model="form.note" label="Catatan (opsional)" placeholder="Untuk keperluan apa..." />
@@ -114,7 +126,7 @@
           <p class="font-jakarta text-sm text-on-surface-secondary">Sisa {{ selectedDebt.direction === 'owe' ? 'Utang' : 'Piutang' }}</p>
           <p class="font-outfit font-bold text-2xl currency" :class="selectedDebt.direction === 'owe' ? 'text-error' : 'text-primary'">{{ formatRupiah(selectedDebt.remaining_amount) }}</p>
         </div>
-        <BaseInput v-model="payAmountStr" label="Nominal Pembayaran" type="text" placeholder="0" prefix="Rp" :required="true" @input="(e) => payAmountStr = formatInput(e.target.value)" />
+        <BaseInput v-model="payAmountStr" label="Nominal Pembayaran" type="text" placeholder="0" prefix="IDR" :required="true" @input="(e) => payAmountStr = formatInput(e.target.value)" />
         <BaseSelect v-model="payWalletId" label="Bayar dari Dompet" :options="walletOptions" :required="true" />
         <p v-if="payError" class="text-sm text-error font-jakarta">{{ payError }}</p>
         <div class="flex gap-3">
@@ -148,8 +160,8 @@ const formError    = ref('')
 const payError     = ref('')
 
 const tabs = [
-  { key: 'owe',  label: '😬 Utang Saya' },
-  { key: 'lend', label: '🙂 Piutang Saya' },
+  { key: 'owe',  label: 'Utang Saya' },
+  { key: 'lend', label: 'Piutang Saya' },
 ]
 
 const form = ref({ direction: 'owe', personName: '', amountStr: '', walletId: '', note: '', dueDate: '' })
@@ -157,7 +169,7 @@ const payAmountStr = ref('')
 const payWalletId  = ref('')
 
 const walletOptions = computed(() =>
-  walletStore.wallets.map(w => ({ value: w.id, label: `${walletStore.getWalletIcon(w.type)} ${walletStore.getWalletLabel(w.type)}` }))
+  walletStore.wallets.map(w => ({ value: w.id, label: walletStore.getWalletLabel(w.type) }))
 )
 const filteredDebts = computed(() => debtStore.debts.filter(d => d.direction === activeTab.value))
 

@@ -108,8 +108,8 @@
     font-variant-numeric: tabular-nums;
   }
   .balance-hidden {
-    filter: blur(8px);
     user-select: none;
+    letter-spacing: 0.1em;
   }
   .floating {
     animation: float 4s ease-in-out infinite;

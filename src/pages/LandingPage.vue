@@ -26,8 +26,8 @@
         </div>
 
         <!-- Right CTA -->
-        <router-link to="/dashboard">
-          <BaseButton variant="primary" size="sm" class="!px-6 !py-2.5 shadow-none hover:shadow-btn">Mulai Sekarang</BaseButton>
+        <router-link to="/login">
+          <BaseButton variant="primary" size="sm" class="!px-6 !py-2.5 shadow-none hover:shadow-btn">Login</BaseButton>
         </router-link>
       </div>
     </nav>
@@ -52,7 +52,7 @@
             Platform finansial terpadu untuk menghubungkan berbagai rekening bank, e-wallet, dan kas tunai secara real-time.
           </p>
           <div class="flex flex-wrap items-center gap-4 pointer-events-auto">
-            <router-link to="/dashboard">
+            <router-link to="/daftar">
               <button class="bg-[#17c662] hover:bg-[#15b358] text-white font-jakarta font-semibold rounded-full px-8 py-3.5 shadow-btn transition-all hover:-translate-y-0.5">
                 Daftar Gratis
               </button>
@@ -148,7 +148,7 @@
               </div>
               <div class="text-left mt-auto">
                 <p class="font-jakarta text-[#4a5f1a] text-xs font-semibold mb-1">Total Saldo Bank</p>
-                <p class="font-outfit text-[#2c3d0c] text-[32px] font-extrabold tracking-tight">Rp 12.4M</p>
+                <p class="font-outfit text-[#2c3d0c] text-[32px] font-extrabold tracking-tight">IDR 12.4M</p>
               </div>
             </div>
 
@@ -164,7 +164,7 @@
               </div>
               <div class="text-left mt-auto">
                 <p class="font-jakarta text-[#a8b8a5] text-xs font-semibold mb-1">Pengeluaran Tunai</p>
-                <p class="font-outfit text-[#c3f53c] text-[32px] font-extrabold tracking-tight">Rp 2.1M</p>
+                <p class="font-outfit text-[#c3f53c] text-[32px] font-extrabold tracking-tight">IDR 2.1M</p>
               </div>
             </div>
 
@@ -183,7 +183,7 @@
                     <div class="w-6 h-6 rounded-full bg-[#3b82f6]"></div>
                     <div class="w-16 h-2 bg-[#e2e8f0] rounded-full ml-3"></div>
                   </div>
-                  <span class="font-outfit text-[#1e293b] text-sm font-bold">Rp 3.5M</span>
+                  <span class="font-outfit text-[#1e293b] text-sm font-bold">IDR 3.5M</span>
                 </div>
                 <!-- Row 2 -->
                 <div class="bg-[#f8fafc] rounded-2xl p-3 flex items-center justify-between">
@@ -191,7 +191,7 @@
                     <div class="w-6 h-6 rounded-full bg-[#a855f7]"></div>
                     <div class="w-12 h-2 bg-[#e2e8f0] rounded-full ml-3"></div>
                   </div>
-                  <span class="font-outfit text-[#1e293b] text-sm font-bold">Rp 1.2M</span>
+                  <span class="font-outfit text-[#1e293b] text-sm font-bold">IDR 1.2M</span>
                 </div>
                 <!-- Row 3 -->
                 <div class="bg-[#f8fafc] rounded-2xl p-3 flex items-center justify-between">
@@ -199,13 +199,13 @@
                     <div class="w-6 h-6 rounded-full bg-[#22c55e]"></div>
                     <div class="w-14 h-2 bg-[#e2e8f0] rounded-full ml-3"></div>
                   </div>
-                  <span class="font-outfit text-[#1e293b] text-sm font-bold">Rp 800k</span>
+                  <span class="font-outfit text-[#1e293b] text-sm font-bold">IDR 800k</span>
                 </div>
               </div>
 
               <div class="text-left mt-auto">
                 <p class="font-jakarta text-[#94a3b8] text-xs font-semibold mb-0.5">Total E-Wallet</p>
-                <p class="font-outfit text-[#475569] text-[40px] font-extrabold tracking-tight leading-none">Rp 5.5M</p>
+                <p class="font-outfit text-[#475569] text-[40px] font-extrabold tracking-tight leading-none">IDR 5.5M</p>
               </div>
             </div>
 
@@ -247,21 +247,21 @@
                       <div class="w-6 h-6 rounded-lg bg-[#17C662] flex items-center justify-center text-white text-[10px] font-bold">B</div>
                       <span class="font-outfit text-xs font-bold text-[#143D1A]">Bank BCA</span>
                     </div>
-                    <span class="font-outfit text-xs font-bold text-[#143D1A]">Rp 12.4M</span>
+                    <span class="font-outfit text-xs font-bold text-[#143D1A]">IDR 12.4M</span>
                   </div>
                   <div class="bg-[#FEFCE8] border border-[#FEF08A] rounded-xl p-2.5 flex items-center justify-between shadow-xs">
                     <div class="flex items-center gap-2">
                       <div class="w-6 h-6 rounded-lg bg-[#EAB308] flex items-center justify-center text-white text-[10px] font-bold">E</div>
                       <span class="font-outfit text-xs font-bold text-[#143D1A]">GoPay &amp; OVO</span>
                     </div>
-                    <span class="font-outfit text-xs font-bold text-[#143D1A]">Rp 5.5M</span>
+                    <span class="font-outfit text-xs font-bold text-[#143D1A]">IDR 5.5M</span>
                   </div>
                   <div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-2.5 flex items-center justify-between shadow-xs">
                     <div class="flex items-center gap-2">
                       <div class="w-6 h-6 rounded-lg bg-[#64748B] flex items-center justify-center text-white text-[10px] font-bold">K</div>
                       <span class="font-outfit text-xs font-bold text-[#143D1A]">Kas Tunai</span>
                     </div>
-                    <span class="font-outfit text-xs font-bold text-[#143D1A]">Rp 2.1M</span>
+                    <span class="font-outfit text-xs font-bold text-[#143D1A]">IDR 2.1M</span>
                   </div>
                 </div>
               </div>
@@ -283,21 +283,38 @@
                 <div class="w-full space-y-2.5 max-w-[220px]">
                   <div class="bg-white/20 border border-white/30 rounded-xl p-2.5 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center text-[10px] font-bold">⚡</div>
+                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                        </svg>
+                      </div>
                       <span class="font-outfit text-xs font-bold text-white">Listrik PLN</span>
                     </div>
                     <span class="bg-white/30 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Lunas</span>
                   </div>
                   <div class="bg-white/20 border border-white/30 rounded-xl p-2.5 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center text-[10px] font-bold">🌐</div>
+                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="2" y1="12" x2="22" y2="12" />
+                          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                      </div>
                       <span class="font-outfit text-xs font-bold text-white">Internet WiFi</span>
                     </div>
                     <span class="bg-[#F5FF6C] text-[#064E3B] text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Jatuh Tempo</span>
                   </div>
                   <div class="bg-white/20 border border-white/30 rounded-xl p-2.5 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center text-[10px] font-bold">🎬</div>
+                      <div class="w-6 h-6 rounded-lg bg-white text-[#17C662] flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
+                          <line x1="7" y1="2" x2="7" y2="22" />
+                          <line x1="17" y1="2" x2="17" y2="22" />
+                          <line x1="2" y1="12" x2="22" y2="12" />
+                        </svg>
+                      </div>
                       <span class="font-outfit text-xs font-bold text-white">Netflix &amp; Spotify</span>
                     </div>
                     <span class="bg-white/30 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Auto-Debit</span>
@@ -324,7 +341,7 @@
                     <span class="font-jakarta text-[11px] font-semibold text-[#64748B]">Total Kekayaan Bersih</span>
                     <span class="bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold px-1.5 py-0.5 rounded">+14.2%</span>
                   </div>
-                  <p class="font-outfit text-xl font-extrabold text-[#0F172A] tracking-tight">Rp 20.000.000</p>
+                  <p class="font-outfit text-xl font-extrabold text-[#0F172A] tracking-tight">IDR 20.000.000</p>
                   
                   <!-- Mini Chart Visual Sparkline -->
                   <div class="mt-2.5 pt-2 border-t border-[#F1F5F9] flex items-end justify-between h-8 gap-1">

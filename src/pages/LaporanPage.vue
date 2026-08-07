@@ -44,7 +44,16 @@
         <h2 class="font-outfit font-semibold text-base text-on-surface mb-5">Pemasukan vs Pengeluaran</h2>
         <div v-if="loading" class="h-64 skeleton rounded-md" />
         <div v-else-if="!monthlyData.length" class="h-64 flex items-center justify-center">
-          <div class="text-center"><p class="text-3xl mb-2">📊</p><p class="font-jakarta text-sm text-on-surface-secondary">Belum ada transaksi bulan ini</p></div>
+          <div class="text-center">
+            <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-on-surface-secondary mx-auto mb-2">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
+            </div>
+            <p class="font-jakarta text-sm text-on-surface-secondary">Belum ada transaksi bulan ini</p>
+          </div>
         </div>
         <Bar v-else :data="barChartData" :options="barChartOptions" class="max-h-64" />
       </div>
@@ -61,7 +70,7 @@
           <div class="mt-4 space-y-1.5">
             <div v-for="(item, i) in expenseByCategory.slice(0, 5)" :key="item.name" class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" :style="{ background: chartColors[i % chartColors.length] }" />
-              <span class="font-jakarta text-xs text-on-surface flex-1 truncate">{{ item.icon }} {{ item.name }}</span>
+              <span class="font-jakarta text-xs text-on-surface flex-1 truncate">{{ item.name }}</span>
               <span class="font-outfit font-semibold text-xs text-on-surface currency">{{ formatRupiah(item.total) }}</span>
             </div>
           </div>
@@ -74,7 +83,11 @@
       <h2 class="font-outfit font-semibold text-base text-on-surface mb-5">Semua Transaksi Bulan Ini</h2>
       <div v-if="loading" class="space-y-3"><div v-for="i in 5" :key="i" class="skeleton h-14 rounded-md" /></div>
       <div v-else-if="!monthlyData.length" class="text-center py-10">
-        <p class="text-3xl mb-2">📭</p>
+        <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-on-surface-secondary mx-auto mb-2">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+          </svg>
+        </div>
         <p class="font-jakarta text-sm text-on-surface-secondary">Tidak ada transaksi di bulan ini</p>
       </div>
       <div v-else class="space-y-3">
@@ -114,7 +127,7 @@ const expenseByCategory = computed(() => {
   const map = {}
   monthlyData.value.filter(t => t.type === 'expense').forEach(t => {
     const key = t.category?.id || 'lainnya'
-    if (!map[key]) map[key] = { name: t.category?.name || 'Lainnya', icon: t.category?.icon || '📦', total: 0 }
+    if (!map[key]) map[key] = { name: t.category?.name || 'Lainnya', total: 0 }
     map[key].total += t.amount
   })
   return Object.values(map).sort((a,b) => b.total - a.total)
@@ -131,7 +144,7 @@ const barChartData = computed(() => ({
 const barChartOptions = {
   responsive: true, maintainAspectRatio: false,
   plugins: { legend: { position: 'top' } },
-  scales: { y: { ticks: { callback: v => `Rp ${(v/1000000).toFixed(1)}jt` } } }
+  scales: { y: { ticks: { callback: v => `IDR ${(v/1000000).toFixed(1)}jt` } } }
 }
 
 const donutChartData = computed(() => ({

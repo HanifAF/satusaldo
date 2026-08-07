@@ -12,8 +12,8 @@
     <form @submit.prevent="handleSubmit" class="space-y-4">
       <BaseSelect v-model="form.walletId" label="Dompet" :options="walletOptions" placeholder="Pilih dompet" :required="true" :error="errors.walletId" />
       <BaseSelect v-if="activeType === 'transfer'" v-model="form.toWalletId" label="Dompet Tujuan" :options="destinationWalletOptions" placeholder="Pilih dompet tujuan" :required="true" :error="errors.toWalletId" />
-      <BaseInput v-model="form.amountStr" label="Nominal" type="text" placeholder="0" prefix="Rp" :required="true" :error="errors.amount" @input="formatAmountInput" />
-      <BaseInput v-if="activeType === 'transfer'" v-model="form.adminFeeStr" label="Biaya Admin (opsional)" type="text" placeholder="0" prefix="Rp" hint="Biaya transfer bank / top up e-wallet" @input="formatAdminFeeInput" />
+      <BaseInput v-model="form.amountStr" label="Nominal" type="text" placeholder="0" prefix="IDR" :required="true" :error="errors.amount" @input="formatAmountInput" />
+      <BaseInput v-if="activeType === 'transfer'" v-model="form.adminFeeStr" label="Biaya Admin (opsional)" type="text" placeholder="0" prefix="IDR" hint="Biaya transfer bank / top up e-wallet" @input="formatAdminFeeInput" />
       <BaseSelect v-if="activeType !== 'transfer'" v-model="form.categoryId" label="Kategori" :options="categoryOptions" placeholder="Pilih kategori" />
       <BaseInput v-model="form.date" label="Tanggal" type="date" :required="true" />
       <div>
@@ -66,14 +66,14 @@ const form = ref({ walletId: '', toWalletId: '', amountStr: '', adminFeeStr: '',
 const modalTitle = computed(() => ({ income: 'Catat Pemasukan', transfer: 'Transfer Saldo', expense: 'Catat Pengeluaran' }[activeType.value]))
 
 const walletOptions = computed(() =>
-  walletStore.wallets.map(w => ({ value: w.id, label: `${walletStore.getWalletIcon(w.type)} ${walletStore.getWalletLabel(w.type)}` }))
+  walletStore.wallets.map(w => ({ value: w.id, label: walletStore.getWalletLabel(w.type) }))
 )
 const destinationWalletOptions = computed(() =>
-  walletStore.wallets.filter(w => w.id !== form.value.walletId).map(w => ({ value: w.id, label: `${walletStore.getWalletIcon(w.type)} ${walletStore.getWalletLabel(w.type)}` }))
+  walletStore.wallets.filter(w => w.id !== form.value.walletId).map(w => ({ value: w.id, label: walletStore.getWalletLabel(w.type) }))
 )
 const categoryOptions = computed(() => {
   const cats = activeType.value === 'income' ? categoryStore.incomeCategories : categoryStore.expenseCategories
-  return cats.map(c => ({ value: c.id, label: c.name, icon: c.icon }))
+  return cats.map(c => ({ value: c.id, label: c.name }))
 })
 
 function formatAmountInput(e)   { const n = parseRupiah(e.target.value); form.value.amountStr   = n ? n.toLocaleString('id-ID') : '' }

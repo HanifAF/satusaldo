@@ -5,7 +5,7 @@
         <div class="w-14 h-14 rounded-xl bg-primary flex items-center justify-center shadow-hero mx-auto mb-4">
           <span class="font-outfit font-extrabold text-white text-2xl">S</span>
         </div>
-        <h1 class="font-outfit font-extrabold text-3xl text-on-surface tracking-tight mb-2">Satu langkah lagi! 🎉</h1>
+        <h1 class="font-outfit font-extrabold text-3xl text-on-surface tracking-tight mb-2">Satu langkah lagi!</h1>
         <p class="font-jakarta text-on-surface-secondary">Masukkan saldo awal untuk masing-masing dompet kamu saat ini.</p>
       </div>
 
@@ -14,35 +14,55 @@
           <!-- Bank -->
           <div class="space-y-3">
             <div class="flex items-center gap-3 pb-3 border-b border-white/30">
-              <span class="text-2xl">🏦</span>
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="3" y1="21" x2="21" y2="21" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                  <polyline points="5 10 12 3 19 10" />
+                  <line x1="7" y1="14" x2="7" y2="18" />
+                  <line x1="12" y1="14" x2="12" y2="18" />
+                  <line x1="17" y1="14" x2="17" y2="18" />
+                </svg>
+              </div>
               <div>
                 <h3 class="font-outfit font-semibold text-base text-on-surface">Dompet Bank</h3>
                 <p class="font-jakarta text-xs text-on-surface-secondary">BCA, Mandiri, BRI, dll.</p>
               </div>
             </div>
-            <BaseInput v-model="form.bank" label="Saldo Bank saat ini" type="text" placeholder="0" prefix="Rp" :error="errors.bank" @input="(e) => form.bank = formatInput(e.target.value)" />
+            <BaseInput v-model="form.bank" label="Saldo Bank saat ini" type="text" placeholder="0" prefix="IDR" :error="errors.bank" @input="(e) => form.bank = formatInput(e.target.value)" />
           </div>
           <!-- E-Wallet -->
           <div class="space-y-3">
             <div class="flex items-center gap-3 pb-3 border-b border-white/30">
-              <span class="text-2xl">📱</span>
+              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                  <line x1="12" y1="18" x2="12.01" y2="18" />
+                </svg>
+              </div>
               <div>
                 <h3 class="font-outfit font-semibold text-base text-on-surface">Dompet E-Wallet</h3>
                 <p class="font-jakarta text-xs text-on-surface-secondary">GoPay, OVO, ShopeePay, Dana, dll.</p>
               </div>
             </div>
-            <BaseInput v-model="form.ewallet" label="Saldo E-Wallet saat ini" type="text" placeholder="0" prefix="Rp" :error="errors.ewallet" @input="(e) => form.ewallet = formatInput(e.target.value)" />
+            <BaseInput v-model="form.ewallet" label="Saldo E-Wallet saat ini" type="text" placeholder="0" prefix="IDR" :error="errors.ewallet" @input="(e) => form.ewallet = formatInput(e.target.value)" />
           </div>
           <!-- Cash -->
           <div class="space-y-3">
             <div class="flex items-center gap-3 pb-3 border-b border-white/30">
-              <span class="text-2xl">💵</span>
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="2" />
+                  <circle cx="12" cy="12" r="2" />
+                  <path d="M6 12h.01M18 12h.01" />
+                </svg>
+              </div>
               <div>
                 <h3 class="font-outfit font-semibold text-base text-on-surface">Dompet Tunai</h3>
                 <p class="font-jakarta text-xs text-on-surface-secondary">Uang fisik di dompet / saku</p>
               </div>
             </div>
-            <BaseInput v-model="form.cash" label="Saldo Tunai saat ini" type="text" placeholder="0" prefix="Rp" :error="errors.cash" @input="(e) => form.cash = formatInput(e.target.value)" />
+            <BaseInput v-model="form.cash" label="Saldo Tunai saat ini" type="text" placeholder="0" prefix="IDR" :error="errors.cash" @input="(e) => form.cash = formatInput(e.target.value)" />
           </div>
           <!-- Total preview -->
           <div class="hero-card p-4 rounded-md">

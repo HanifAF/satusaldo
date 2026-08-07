@@ -8,12 +8,7 @@ const routes = [
     component: () => import('@/pages/LandingPage.vue') 
   },
 
-  /* 
-  ========================================================================
-  NON-AKTIF SEMENTARA (Dapat diaktifkan kembali saat dibutuhkan):
-  ========================================================================
-  { path: '/login', name: 'Login',   component: () => import('@/pages/LoginPage.vue') },
-  { path: '/setup', name: 'Setup',   component: () => import('@/pages/SetupPage.vue') },
+  // Dashboard & App Views (Aktif)
   {
     path: '/dashboard',
     component: () => import('@/layouts/AppLayout.vue'),
@@ -24,8 +19,10 @@ const routes = [
       { path: '/tagihan',  name: 'Tagihan',   component: () => import('@/pages/TagihanPage.vue') },
     ]
   },
-  ========================================================================
-  */
+  { path: '/login',    name: 'Login',    component: () => import('@/pages/LoginPage.vue') },
+  { path: '/daftar',   name: 'Daftar',   component: () => import('@/pages/LoginPage.vue') },
+  { path: '/register', name: 'Register', component: () => import('@/pages/LoginPage.vue') },
+  { path: '/setup',    name: 'Setup',    component: () => import('@/pages/SetupPage.vue') },
 
   // Semua path lainnya dialihkan ke Landing Page
   { 

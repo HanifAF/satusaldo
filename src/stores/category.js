@@ -17,7 +17,7 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   async function addCategory({ name, icon, type }) {
-    const newCat = { id: `cat-custom-${Date.now()}`, user_id: 'mock-user-001', name, icon: icon || '📦', type }
+    const newCat = { id: `cat-custom-${Date.now()}`, user_id: 'mock-user-001', name, icon: icon || '', type }
     categories.value.push(newCat)
     return newCat
   }

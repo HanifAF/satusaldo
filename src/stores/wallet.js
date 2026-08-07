@@ -37,7 +37,7 @@ export const useWalletStore = defineStore('wallet', () => {
 
   function getWalletById(id)    { return wallets.value.find(w => w.id === id) }
   function getWalletLabel(type) { return { bank: 'Bank', ewallet: 'E-Wallet', cash: 'Tunai' }[type] || type }
-  function getWalletIcon(type)  { return { bank: '🏦', ewallet: '📱', cash: '💵' }[type] || '💳' }
+  function getWalletIcon(type)  { return '' }
   function getWalletColor(type) {
     return {
       bank:    'from-blue-400 to-blue-600',

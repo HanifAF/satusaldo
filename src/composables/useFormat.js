@@ -4,8 +4,8 @@
 
 export function useFormatRupiah() {
   function formatRupiah(amount) {
-    if (amount === null || amount === undefined || isNaN(amount)) return 'Rp 0'
-    return 'Rp ' + Number(amount).toLocaleString('id-ID')
+    if (amount === null || amount === undefined || isNaN(amount)) return 'IDR 0'
+    return 'IDR ' + Number(amount).toLocaleString('id-ID')
   }
 
   function parseRupiah(str) {
