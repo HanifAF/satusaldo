@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Total Saldo Terkini — SatuSaldo</title>
+  <!-- Include Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Configuration to match SatuSaldo Design System -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'satu-mint': '#17c662',
+            'satu-mint-dark': '#0d8f45',
+            'satu-surface': '#ffffff',
+            'satu-border': '#e5e7eb',
+            'satu-text': '#111827',
+            'satu-text-muted': '#6b7280',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          borderRadius: {
+            'satu': '8px',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Include Google Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style data-purpose="chart-styles">
+    body {
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .chart-container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+      border: 1px solid #f0f1f3;
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #f3f4f6;
+      z-index: 1;
+    }
+
+    .svg-chart {
+      width: 100%;
+      height: 260px;
+      display: block;
+      margin-top: 0;
+      z-index: 10;
+      position: relative;
+      cursor: crosshair;
+    }
+
+    .scatter-dots {
+      position: absolute;
+      top: 1.5rem;
+      left: 0;
+      width: 100%;
+      height: 140px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .dot {
+      position: absolute;
+      background-color: #17c662;
+      border-radius: 50%;
+      opacity: 0.55;
+    }
+
+    /* Time Toggle Button Pill */
+    .toggle-pill {
+      background-color: #f3f4f6;
+      border-radius: 9999px;
+      padding: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .toggle-btn {
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4b5563;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn.active {
+      background: linear-gradient(135deg, #17c662 0%, #15803d 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(23, 198, 98, 0.35);
+    }
+
+    .toggle-btn:not(.active):hover {
+      color: #111827;
+    }
+
+    /* Tooltip styling */
+    #hover-tooltip {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      z-index: 50;
+      pointer-events: none;
+      opacity: 1;
+      transition: left 0.15s cubic-bezier(0.4, 0, 0.2, 1), top 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+      margin-top: -12px;
+    }
+
+    #hover-tooltip.hidden-tooltip {
+      opacity: 0;
+    }
+
+    .tooltip-bubble {
+      background: #17c662;
+      color: #ffffff;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(23, 198, 98, 0.4);
+      white-space: nowrap;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-align: center;
+    }
+
+    .tooltip-arrow {
+      width: 7px;
+      height: 7px;
+      background: #17c662;
+      margin: -3.5px auto 0;
+      transform: rotate(45deg);
+      border-radius: 1px;
+    }
+
+    /* Hover vertical dashed line */
+    #hover-line {
+      position: absolute;
+      width: 1.5px;
+      bottom: 0;
+      z-index: 15;
+      pointer-events: none;
+      opacity: 1;
+      transition: left 0.15s cubic-bezier(0.4, 0, 0.2, 1), top 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+      background: repeating-linear-gradient(
+        to bottom,
+        #9ca3af 0px,
+        #9ca3af 4px,
+        transparent 4px,
+        transparent 8px
+      );
+    }
+
+    #hover-line.hidden-line {
+      opacity: 0;
+    }
+
+    /* Hover point dot on curve */
+    #hover-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #bbf7d0;
+      border: 2px solid #17c662;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+      transform: translate(-50%, -50%);
+      z-index: 20;
+      pointer-events: none;
+      opacity: 1;
+      transition: left 0.15s cubic-bezier(0.4, 0, 0.2, 1), top 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+    }
+
+    #hover-dot.hidden-dot {
+      opacity: 0;
+    }
+
+    /* Main Balance Typography */
+    #main-balance {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: #17c662;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      transition: color 0.15s ease;
+    }
+
+    /* X Axis Labels */
+    .x-label-item {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      color: #6b7280;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.15s ease, font-weight 0.15s ease;
+    }
+
+    .x-label-item.active {
+      color: #17c662 !important;
+      font-weight: 500 !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- BEGIN: Chart Card -->
+  <div class="chart-container" data-purpose="footprint-chart">
+
+    <!-- BEGIN: Header Section -->
+    <div class="flex justify-between items-start mb-2 relative z-20">
+      <!-- Left side: Title and Value -->
+      <div>
+        <h2 class="font-heading font-semibold text-xs text-gray-500 tracking-wide uppercase">Total Saldo Terkini</h2>
+        <div class="flex items-baseline mt-1">
+          <span id="main-balance">IDR 1.850.000</span>
+        </div>
+      </div>
+
+      <!-- Right side: Time Toggle Pill -->
+      <div class="toggle-pill">
+        <button class="toggle-btn" data-view="today">
+          Today
+        </button>
+        <button class="toggle-btn" data-view="month">
+          Month
+        </button>
+        <button class="toggle-btn active" data-view="all">
+          All Time
+        </button>
+      </div>
+    </div>
+    <!-- END: Header Section -->
+
+    <!-- BEGIN: Decorative Scatter Dots -->
+    <div class="scatter-dots">
+      <div class="dot" style="width: 4px; height: 4px; top: 12%; left: 16%;"></div>
+      <div class="dot" style="width: 3px; height: 3px; top: 22%; left: 35%;"></div>
+      <div class="dot" style="width: 2px; height: 2px; top: 10%; left: 45%;"></div>
+      <div class="dot" style="width: 4px; height: 4px; top: 18%; left: 55%;"></div>
+      <div class="dot" style="width: 3px; height: 3px; top: 30%; left: 60%;"></div>
+      <div class="dot" style="width: 3px; height: 3px; top: 14%; left: 70%;"></div>
+    </div>
+    <!-- END: Decorative Scatter Dots -->
+
+    <!-- BEGIN: Chart Area -->
+    <div class="relative w-full h-[260px] mt-4" data-purpose="chart-graphic" id="chart-area">
+
+      <!-- Horizontal Grid Lines -->
+      <div class="grid-line" style="top: 25%;"></div>
+      <div class="grid-line" style="top: 50%;"></div>
+      <div class="grid-line" style="top: 75%;"></div>
+      <div class="grid-line" style="top: 100%;"></div>
+
+      <!-- SVG Area Chart -->
+      <svg id="chart-svg" class="svg-chart" preserveAspectRatio="none" viewBox="0 0 1000 260">
+        <defs>
+          <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#17c662" stop-opacity="0.18"></stop>
+            <stop offset="100%" stop-color="#17c662" stop-opacity="0.01"></stop>
+          </linearGradient>
+        </defs>
+
+        <!-- Area Fill Path -->
+        <path id="area-fill" d="" fill="url(#areaGradient)"></path>
+
+        <!-- Line Path -->
+        <path id="area-line" d="" fill="none" stroke="#17c662" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+      </svg>
+
+      <!-- Hover / Active elements (positioned via JS) -->
+      <div id="hover-line"></div>
+      <div id="hover-dot"></div>
+      <div id="hover-tooltip">
+        <div class="tooltip-bubble" id="tooltip-text">RP 1.850.000</div>
+        <div class="tooltip-arrow"></div>
+      </div>
+    </div>
+    <!-- END: Chart Area -->
+
+    <!-- BEGIN: X-Axis Labels -->
+    <div class="flex justify-between text-xs text-gray-500 mt-4 px-1" id="x-labels">
+      <span class="x-label-item" data-month="0">Jan</span>
+      <span class="x-label-item" data-month="1">Feb</span>
+      <span class="x-label-item" data-month="2">Mar</span>
+      <span class="x-label-item" data-month="3">Apr</span>
+      <span class="x-label-item" data-month="4">May</span>
+      <span class="x-label-item" data-month="5">Jun</span>
+      <span class="x-label-item" data-month="6">Jul</span>
+      <span class="x-label-item active" data-month="7">Aug</span>
+      <span class="x-label-item" data-month="8">Sep</span>
+      <span class="x-label-item" data-month="9">Oct</span>
+      <span class="x-label-item" data-month="10">Nov</span>
+      <span class="x-label-item" data-month="11">Dec</span>
+    </div>
+    <!-- END: X-Axis Labels -->
+  </div>
+  <!-- END: Chart Card -->
+
+  <script>
+    // ============================================================
+    // DATASETS PER VIEW
+    // ============================================================
+    const datasets = {
+      today: {
+        labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '23:59'],
+        data: [11_250_000, 11_250_000, 11_250_000, 11_800_000, 11_650_000, 11_500_000, 11_500_000, 11_500_000, 11_500_000],
+        defaultIndex: 6
+      },
+      month: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        data: [2_100_000, 1_950_000, 2_200_000, 2_800_000, 2_700_000, 2_400_000, 2_150_000, 1_850_000, 2_200_000, 2_600_000, 3_100_000, 3_650_000],
+        defaultIndex: 7
+      },
+      all: {
+        labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026'],
+        data: [2_500_000, 4_100_000, 6_300_000, 8_000_000, 9_700_000, 10_600_000, 11_500_000],
+        defaultIndex: 6
+      }
+    };
+
+    let currentView = 'all';
+    let currentData = datasets[currentView].data;
+    let currentLabels = datasets[currentView].labels;
+    let defaultIndex = datasets[currentView].defaultIndex;
+
+    // ============================================================
+    // FORMATTER
+    // ============================================================
+    function formatRupiah(val) {
+      return 'IDR ' + val.toLocaleString('id-ID');
+    }
+
+    // ============================================================
+    // SVG PATH GENERATION (Smooth Cubic Bezier)
+    // ============================================================
+    const SVG_W = 1000;
+    const SVG_H = 260;
+    const PAD_TOP = 25;
+    const PAD_BOTTOM = 15;
+
+    function getMinMax(data) {
+      const min = Math.min(...data);
+      const max = Math.max(...data);
+      return {
+        minVal: Math.max(0, min * 0.7),
+        maxVal: max || 1
+      };
+    }
+
+    function getX(index, length) {
+      return (index / (length - 1)) * SVG_W;
+    }
+
+    function getY(value, minVal, maxVal) {
+      const usable = SVG_H - PAD_TOP - PAD_BOTTOM;
+      const ratio = (value - minVal) / (maxVal - minVal || 1);
+      return SVG_H - PAD_BOTTOM - (ratio * usable);
+    }
+
+    function buildSmoothedPath(data, closePath) {
+      const { minVal, maxVal } = getMinMax(data);
+      const points = data.map((v, i) => ({ x: getX(i, data.length), y: getY(v, minVal, maxVal) }));
+      let path = `M${points[0].x},${points[0].y}`;
+
+      for (let i = 0; i < points.length - 1; i++) {
+        const p0 = points[i];
+        const p1 = points[i + 1];
+        const tension = 0.35;
+        const dx = (p1.x - p0.x) * tension;
+        path += ` C${p0.x + dx},${p0.y} ${p1.x - dx},${p1.y} ${p1.x},${p1.y}`;
+      }
+
+      if (closePath) {
+        const last = points[points.length - 1];
+        path += ` L${last.x},${SVG_H} L${points[0].x},${SVG_H} Z`;
+      }
+
+      return path;
+    }
+
+    function renderXLabels(labels) {
+      const container = document.getElementById('x-labels');
+      container.innerHTML = labels.map((l, i) => `<span class="x-label-item" data-idx="${i}">${l}</span>`).join('');
+    }
+
+    function renderView(viewKey) {
+      currentView = viewKey;
+      currentData = datasets[viewKey].data;
+      currentLabels = datasets[viewKey].labels;
+      defaultIndex = datasets[viewKey].defaultIndex;
+
+      document.getElementById('area-fill').setAttribute('d', buildSmoothedPath(currentData, true));
+      document.getElementById('area-line').setAttribute('d', buildSmoothedPath(currentData, false));
+      renderXLabels(currentLabels);
+      setElementPosition(defaultIndex);
+    }
+
+    // ============================================================
+    // INTERAKTIVITAS: Hover tracking & Sinkronisasi Real-Time
+    // ============================================================
+    const chartArea    = document.getElementById('chart-area');
+    const hoverLine    = document.getElementById('hover-line');
+    const hoverDot     = document.getElementById('hover-dot');
+    const hoverTooltip = document.getElementById('hover-tooltip');
+    const tooltipText  = document.getElementById('tooltip-text');
+    const mainBalance  = document.getElementById('main-balance');
+
+    function getYPercent(index) {
+      const { minVal, maxVal } = getMinMax(currentData);
+      const val = currentData[index];
+      const usable = SVG_H - PAD_TOP - PAD_BOTTOM;
+      const ratio = (val - minVal) / (maxVal - minVal || 1);
+      const svgY = SVG_H - PAD_BOTTOM - (ratio * usable);
+      return (svgY / SVG_H) * 100;
+    }
+
+    function setElementPosition(index) {
+      const rect = chartArea.getBoundingClientRect();
+      const width = rect.width || chartArea.clientWidth;
+      const snapX = (index / (currentData.length - 1)) * width;
+      const yPercent = getYPercent(index);
+
+      // Posisi garis vertikal putus-putus
+      hoverLine.style.left = snapX + 'px';
+      hoverLine.style.top = yPercent + '%';
+      hoverLine.style.height = (100 - yPercent) + '%';
+
+      // Posisi titik pada kurva
+      hoverDot.style.left = snapX + 'px';
+      hoverDot.style.top = yPercent + '%';
+
+      // Posisi tooltip
+      hoverTooltip.style.left = snapX + 'px';
+      hoverTooltip.style.top = yPercent + '%';
+
+      // Update nilai
+      const val = currentData[index];
+      tooltipText.textContent = formatRupiah(val);
+      mainBalance.textContent = formatRupiah(val);
+
+      // Highlight active label
+      const labels = document.querySelectorAll('#x-labels .x-label-item');
+      labels.forEach((label, i) => {
+        if (i === index) {
+          label.classList.add('active');
+        } else {
+          label.classList.remove('active');
+        }
+      });
+    }
+
+    // Set posisi awal
+    window.addEventListener('load', () => {
+      renderView('all');
+    });
+    setTimeout(() => renderView('all'), 50);
+
+    // Event saat mouse bergerak di area chart
+    chartArea.addEventListener('mousemove', (e) => {
+      const rect = chartArea.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const width = rect.width;
+
+      const ratio = mouseX / width;
+      const floatIdx = ratio * (currentData.length - 1);
+      const idx = Math.round(Math.max(0, Math.min(currentData.length - 1, floatIdx)));
+
+      setElementPosition(idx);
+    });
+
+    // Event saat mouse keluar dari area chart -> kembali ke default
+    chartArea.addEventListener('mouseleave', () => {
+      setElementPosition(defaultIndex);
+    });
+
+    // ============================================================
+    // TOGGLE BUTTONS
+    // ============================================================
+    const toggleBtns = document.querySelectorAll('.toggle-btn');
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        toggleBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const view = btn.dataset.view;
+        renderView(view);
+      });
+    });
+  </script>
+</body>
+</html>

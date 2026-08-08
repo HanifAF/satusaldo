@@ -33,8 +33,13 @@
           </button>
         </div>
 
-        <!-- Stacked Wallet Cards (BCA, Gopay, Tunai) -->
+        <!-- Stacked Wallet Cards (BCA, Gopay, Tunai) with Sub-header -->
         <div class="space-y-2.5">
+          <div class="px-1 pt-0.5">
+            <h3 class="font-outfit font-bold text-xs uppercase tracking-wider text-on-surface-secondary">
+              Saldo per Dompet
+            </h3>
+          </div>
           <!-- BCA -->
           <div class="bg-white hover:bg-gray-50/80 border border-gray-200/80 px-4 sm:px-5 py-3 rounded-2xl transition-all flex items-center justify-between shadow-sm">
             <span class="font-outfit font-bold text-sm sm:text-base text-gray-800">BCA</span>
@@ -71,14 +76,19 @@
 
     <!-- Transactions Section (Clean Modern List with Date & Service Filters) -->
     <div class="pt-2">
-      <!-- Section Title & Subtitle outside Card -->
-      <div class="mb-4">
-        <h2 class="font-outfit font-bold text-xl sm:text-2xl text-on-surface tracking-tight">
-          Aktivitas Terakhir
-        </h2>
-        <p class="font-jakarta text-xs sm:text-sm text-on-surface-secondary mt-1">
-          Pantau transaksi masuk, keluar, dan perpindahan saldo dalam satu riwayat yang mudah dipindai.
-        </p>
+      <!-- Section Title & Subtitle + Legend outside Card -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <h2 class="font-outfit font-bold text-xl sm:text-2xl text-on-surface tracking-tight">
+            Aktivitas Terakhir
+          </h2>
+          <p class="font-jakarta text-xs sm:text-sm text-on-surface-secondary mt-0.5">
+            Pantau transaksi masuk, keluar, dan perpindahan saldo dalam satu riwayat yang mudah dipindai.
+          </p>
+        </div>
+
+        <!-- Shared Transaction Legend -->
+        <TransactionLegend />
       </div>
 
       <!-- Main Card Container -->
@@ -167,8 +177,8 @@
             </div>
           </div>
 
-          <!-- Active Filter Tags Row -->
-          <div v-if="activeFilterTags.length" class="flex items-center gap-2 flex-wrap pt-0.5">
+          <!-- Active Filter Tags Row (Shown only when multi-filter is active) -->
+          <div v-if="activeFilterTags.length > 1" class="flex items-center gap-2 flex-wrap pt-0.5">
             <div
               v-for="tag in activeFilterTags"
               :key="tag.key"
@@ -293,8 +303,10 @@ import { useWalletStore } from '@/stores/wallet'
 import { useBillStore } from '@/stores/bill'
 import { useDebtStore } from '@/stores/debt'
 import { useCategoryStore } from '@/stores/category'
+import { useFormatRupiah, useFormatDate } from '@/composables/useFormat'
 import HeroCard from '@/components/app/HeroCard.vue'
 import TransactionRow from '@/components/app/TransactionRow.vue'
+import TransactionLegend from '@/components/app/TransactionLegend.vue'
 import ModalTransaksi from '@/components/app/ModalTransaksi.vue'
 import FilterCustomDropdown from '@/components/app/FilterCustomDropdown.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
@@ -305,6 +317,8 @@ const transactionStore = useTransactionStore()
 const billStore = useBillStore()
 const debtStore = useDebtStore()
 const categoryStore = useCategoryStore()
+const { formatRupiah } = useFormatRupiah()
+const { formatGroupDate } = useFormatDate()
 
 const showModal = ref(false)
 
@@ -504,44 +518,8 @@ const filteredTransactions = computed(() => {
   return list
 })
 
-function formatGroupDate(dateStr) {
-  if (!dateStr) return ''
-  const parts = dateStr.split('-')
-  let txDate
-  if (parts.length === 3) {
-    txDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]))
-  } else {
-    txDate = new Date(dateStr)
-  }
-
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const yesterday = new Date(today)
-  yesterday.setDate(today.getDate() - 1)
-
-  const checkDate = new Date(txDate)
-  checkDate.setHours(0, 0, 0, 0)
-
-  const months = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-  ]
-  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
-
-  const dayName = days[txDate.getDay()]
-  const day = txDate.getDate()
-  const monthName = months[txDate.getMonth()]
-  const year = txDate.getFullYear()
-  const fullDate = `${dayName}, ${day} ${monthName} ${year}`
-
-  if (checkDate.getTime() === today.getTime() || dateStr === '2026-08-07') {
-    return `Hari Ini • ${fullDate}`
-  }
-  if (checkDate.getTime() === yesterday.getTime() || dateStr === '2026-08-06') {
-    return `Kemarin • ${fullDate}`
-  }
-
-  return fullDate
+function formatDateLabel(dateStr) {
+  return formatGroupDate(dateStr)
 }
 
 function calculateGroupSummary(transactions) {
@@ -627,11 +605,6 @@ const userFirstName = computed(() => {
   const name = authStore.userName || 'Pengguna'
   return name.split(' ')[0]
 })
-
-function formatRupiah(amount) {
-  if (!amount && amount !== 0) return 'IDR 0'
-  return `IDR ${amount.toLocaleString('id-ID')}`
-}
 
 onMounted(async () => {
   await Promise.all([

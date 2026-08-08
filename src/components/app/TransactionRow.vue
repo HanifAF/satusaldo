@@ -89,12 +89,12 @@
         {{ amountPrefix }}{{ formatRupiah(transaction.amount) }}
       </p>
 
-      <!-- Fee (for transfer with admin fee) -->
+      <!-- Fee (always rendered for transfer transactions) -->
       <p
-        v-if="transaction.type === 'transfer' && transaction.admin_fee > 0"
+        v-if="transaction.type === 'transfer'"
         class="font-jakarta text-[11px] text-gray-400 font-normal mt-0.5 whitespace-nowrap"
       >
-        Fee {{ formatRupiah(transaction.admin_fee) }}
+        Fee : {{ (transaction.admin_fee || 0) > 0 ? formatRupiah(transaction.admin_fee) : '0' }}
       </p>
     </div>
   </div>
@@ -134,10 +134,11 @@ const targetWalletName = computed(() => {
 })
 
 function getWalletBadgeStyle(type) {
-  if (type === 'bank') return 'bg-blue-50/80 text-blue-600 border-blue-100'
-  if (type === 'ewallet') return 'bg-purple-50/80 text-purple-600 border-purple-100'
-  if (type === 'cash') return 'bg-amber-50/80 text-amber-700 border-amber-100'
-  return 'bg-gray-50 text-gray-600 border-gray-200'
+  // Neutral / monochrome palette for payment sources to avoid competing with category colors
+  if (type === 'bank') return 'bg-slate-100/90 text-slate-700 border-slate-200/90'
+  if (type === 'ewallet') return 'bg-gray-100/90 text-gray-700 border-gray-200/90'
+  if (type === 'cash') return 'bg-zinc-100/90 text-zinc-700 border-zinc-200/90'
+  return 'bg-gray-100 text-gray-600 border-gray-200'
 }
 
 function walletIcon(type) {
@@ -206,10 +207,10 @@ const categoryStyle = computed(() => {
     }
   }
 
-  // Makanan & Minuman
+  // Makanan & Minuman (Blue)
   if (catName.includes('makan') || catName.includes('minum') || note.includes('makan') || note.includes('boba') || note.includes('kopi')) {
     return {
-      bg: 'bg-rose-50 text-rose-500',
+      bg: 'bg-blue-50 text-blue-500',
       iconComponent: () => h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' }, [
         h('path', { d: 'M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2' }),
         h('path', { d: 'M15 11v11' }),
@@ -231,10 +232,10 @@ const categoryStyle = computed(() => {
     }
   }
 
-  // Transport
+  // Transport (Cyan / Teal - distinct from Belanja amber)
   if (catName.includes('transport') || note.includes('goride') || note.includes('gocar') || note.includes('parkir') || note.includes('bensin') || note.includes('kantor')) {
     return {
-      bg: 'bg-amber-50 text-amber-600',
+      bg: 'bg-cyan-50 text-cyan-600',
       iconComponent: () => h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round' }, [
         h('rect', { x: '4', y: '3', width: '16', height: '16', rx: '2' }),
         h('path', { d: 'M4 11h16M12 3v8' }),
